@@ -20,6 +20,7 @@ export default function LandingPage() {
   const [password, setPassword] = useState("");
   const cheese = "cheese"; // Placeholder for cheese variable, not used in this example
   const router = useRouter();
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
