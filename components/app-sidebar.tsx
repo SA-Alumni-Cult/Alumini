@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -15,10 +15,25 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Home, Users, User, Calendar, Briefcase, Settings, LogOut, ChevronUp, GraduationCap } from "lucide-react"
+} from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Home,
+  Users,
+  User,
+  Calendar,
+  Briefcase,
+  Settings,
+  LogOut,
+  ChevronUp,
+  GraduationCap,
+} from "lucide-react";
 
 const navigationItems = [
   {
@@ -41,45 +56,45 @@ const navigationItems = [
     url: "/dashboard/events",
     icon: Calendar,
   },
-  {
-    title: "Job Board",
-    url: "/dashboard/jobs",
-    icon: Briefcase,
-  },
+  // {
+  //   title: "Job Board",
+  //   url: "/dashboard/jobs",
+  //   icon: Briefcase,
+  // },
   {
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
   },
-]
+];
 
 export function AppSidebar() {
-  const router = useRouter()
-  const pathname = usePathname()
-  const [userEmail, setUserEmail] = useState("")
+  const router = useRouter();
+  const pathname = usePathname();
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
-    const email = localStorage.getItem("userEmail")
+    const email = localStorage.getItem("userEmail");
     if (email) {
-      setUserEmail(email)
+      setUserEmail(email);
     }
-  }, [])
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn")
-    localStorage.removeItem("userEmail")
-    router.push("/")
-  }
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+    router.push("/");
+  };
 
   const getUserName = () => {
     if (userEmail) {
       return userEmail
         .split("@")[0]
         .replace(".", " ")
-        .replace(/\b\w/g, (l) => l.toUpperCase())
+        .replace(/\b\w/g, (l) => l.toUpperCase());
     }
-    return "User"
-  }
+    return "User";
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -108,7 +123,11 @@ export function AppSidebar() {
             <SidebarMenu>
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.url}
+                    tooltip={item.title}
+                  >
                     <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -131,7 +150,10 @@ export function AppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src="/placeholder.svg?height=32&width=32" alt={getUserName()} />
+                    <AvatarImage
+                      src="/placeholder.svg?height=32&width=32"
+                      alt={getUserName()}
+                    />
                     <AvatarFallback className="rounded-lg">
                       {getUserName()
                         .split(" ")
@@ -140,7 +162,9 @@ export function AppSidebar() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{getUserName()}</span>
+                    <span className="truncate font-semibold">
+                      {getUserName()}
+                    </span>
                     <span className="truncate text-xs">{userEmail}</span>
                   </div>
                   <ChevronUp className="ml-auto size-4" />
@@ -175,5 +199,5 @@ export function AppSidebar() {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
