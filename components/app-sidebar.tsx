@@ -56,11 +56,7 @@ const navigationItems = [
     url: "/dashboard/events",
     icon: Calendar,
   },
-  // {
-  //   title: "Job Board",
-  //   url: "/dashboard/jobs",
-  //   icon: Briefcase,
-  // },
+
   {
     title: "Settings",
     url: "/dashboard/settings",
