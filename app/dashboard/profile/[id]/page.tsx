@@ -295,7 +295,7 @@ export default function AlumniProfile() {
           </div>
 
           {/* Experience */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Professional Experience</CardTitle>
             </CardHeader>
@@ -321,23 +321,9 @@ export default function AlumniProfile() {
                 </div>
               ))}
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Skills */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Skills & Expertise</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {profile.skills.map((skill, index) => (
-                  <Badge key={index} variant="secondary">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
