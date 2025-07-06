@@ -23,15 +23,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-async function getAlumni() {
-  const res = await fetch("http://localhost:3000/api/alumni", {
-    cache: "no-store", // avoid caching during dev
-  });
-
-  if (!res.ok) throw new Error("Failed to fetch alumni");
-
-  return res.json();
-}
 // Mock data for alumni
 const recentAlumni = [
   {
@@ -87,31 +78,9 @@ const upcomingEvents = [
   },
 ];
 
-export default function Dashboard() {
+export default async function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [alumni, setAlumni] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getAlumni();
-        setAlumni(data);
-        console.log("Fetched alumni:", data);
-      } catch (err) {
-        console.error("Failed to fetch alumni", err);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    if (email) {
-      setUserEmail(email);
-    }
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -145,16 +114,6 @@ export default function Dashboard() {
             Stay connected with your alumni network and discover new
             opportunities.
           </p>
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">Alumni Members</h1>
-          <ul className="mt-4 space-y-2">
-            {alumni.map((person: any) => (
-              <li key={person._id} className="border p-2 rounded">
-                {person.name}
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Stats Cards */}

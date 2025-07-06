@@ -15,7 +15,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { GraduationCap, Users, Calendar, Award } from "lucide-react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  SignOutButton,
+} from "@clerk/nextjs";
+
 export default function LandingPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,8 +31,8 @@ export default function LandingPage() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate login - in real app, this would validate credentials
+    e.preventDefault(); // Simulate login - in real app, this would validate credentials
+
     if (email && password) {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userEmail", email);
@@ -55,15 +62,14 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl">
-                Connect with Your
-                <span className="text-blue-600"> Alumni Network</span>
+                Connect with Your{" "}
+                <span className="text-blue-600">Alumni Network</span>
               </h1>
               <p className="mt-6 text-xl text-gray-600">
                 Stay connected with your college community. Discover
                 opportunities, share experiences, and build lasting professional
                 relationships.
               </p>
-
               {/* Features */}
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="flex items-center">
@@ -125,7 +131,7 @@ export default function LandingPage() {
                   </form>
                   <div className="mt-4 text-center">
                     <p className="text-sm text-gray-600">
-                      Don't have an account?{" "}
+                      Don't have an account?
                       <a href="#" className="text-blue-600 hover:underline">
                         Request Access
                       </a>
@@ -137,7 +143,13 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
       <SignedIn>
+        <SignOutButton>
+          <button className="px-8 py-4 bg-purple-600 text-white rounded-full text-xl font-semibold shadow-lg hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+            sign out
+          </button>
+        </SignOutButton>
         {/* If signed in, show a user button and a link to their dashboard */}
         <div className="flex items-center space-x-4">
           <Link
@@ -148,6 +160,7 @@ export default function LandingPage() {
           </Link>
         </div>
       </SignedIn>
+
       <SignedOut>
         {/* If signed out, show the call to action button */}
         <SignInButton mode="modal">
@@ -156,6 +169,7 @@ export default function LandingPage() {
           </button>
         </SignInButton>
       </SignedOut>
+
       {/* Stats Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
