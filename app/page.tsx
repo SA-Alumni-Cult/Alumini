@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { GraduationCap, Users, Calendar, Award, Upload } from "lucide-react";
-import UploadFromFileButton from "@/components/uploadfromfile";
+
 
 export default function LandingPage() {
   const [email, setEmail] = useState("");
@@ -160,7 +160,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <UploadFromFileButton />
+
     </div>
   );
 }
