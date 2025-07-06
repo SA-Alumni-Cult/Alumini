@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { GraduationCap, Users, Calendar, Award } from "lucide-react";
-
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 export default function LandingPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -136,7 +137,25 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
+      <SignedIn>
+        {/* If signed in, show a user button and a link to their dashboard */}
+        <div className="flex items-center space-x-4">
+          <Link
+            href="/dashboard"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg text-lg hover:bg-blue-700 transition duration-300"
+          >
+            Go to Dashboard
+          </Link>
+        </div>
+      </SignedIn>
+      <SignedOut>
+        {/* If signed out, show the call to action button */}
+        <SignInButton mode="modal">
+          <button className="px-8 py-4 bg-purple-600 text-white rounded-full text-xl font-semibold shadow-lg hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+            Get Started - Sign Up/Log In
+          </button>
+        </SignInButton>
+      </SignedOut>
       {/* Stats Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

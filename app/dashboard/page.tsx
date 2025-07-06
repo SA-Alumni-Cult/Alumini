@@ -23,6 +23,15 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+async function getAlumni() {
+  const res = await fetch("http://localhost:3000/api/alumni", {
+    cache: "no-store", // avoid caching during dev
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch alumni");
+
+  return res.json();
+}
 // Mock data for alumni
 const recentAlumni = [
   {
@@ -81,6 +90,21 @@ const upcomingEvents = [
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [alumni, setAlumni] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getAlumni();
+        setAlumni(data);
+        console.log("Fetched alumni:", data);
+      } catch (err) {
+        console.error("Failed to fetch alumni", err);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -122,6 +146,16 @@ export default function Dashboard() {
             opportunities.
           </p>
         </div>
+        <div>
+          <h1 className="text-2xl font-bold">Alumni Members</h1>
+          <ul className="mt-4 space-y-2">
+            {alumni.map((person: any) => (
+              <li key={person._id} className="border p-2 rounded">
+                {person.name}
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -137,21 +171,6 @@ export default function Dashboard() {
               <p className="text-xs ">+12% from last month</p>
             </CardContent>
           </Card>
-
-          {/* <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Upcoming Events
-              </CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-muted-foreground">
-                Next event in 5 days
-              </p>
-            </CardContent>
-          </Card> */}
         </div>
 
         <div className="grid  lg:grid-cols-1 gap-6">
@@ -204,46 +223,6 @@ export default function Dashboard() {
               </Button>
             </CardContent>
           </Card>
-
-          {/* Upcoming Events */}
-          {/* <Card>
-            <CardHeader>
-              <CardTitle>Upcoming Events</CardTitle>
-              <CardDescription>
-                Don't miss these exciting alumni events
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {upcomingEvents.map((event) => (
-                <div key={event.id} className="border rounded-lg p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">
-                        {event.title}
-                      </h4>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        {event.date}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {event.location}
-                      </div>
-                    </div>
-                    <Badge variant="secondary">
-                      {event.attendees} attending
-                    </Badge>
-                  </div>
-                  <Button size="sm" className="mt-3">
-                    Register
-                  </Button>
-                </div>
-              ))}
-              <Button variant="outline" className="w-full bg-transparent">
-                View All Events
-              </Button>
-            </CardContent>
-          </Card> */}
         </div>
       </div>
     </div>
