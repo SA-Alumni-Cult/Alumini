@@ -34,7 +34,7 @@ import {
   ChevronUp,
   GraduationCap,
 } from "lucide-react";
-
+import { SignOutButton } from "@clerk/nextjs";
 const navigationItems = [
   {
     title: "Dashboard",
@@ -185,8 +185,10 @@ export function AppSidebar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log out
+                  <SignOutButton>
+                    <LogOut className="mr-2 h-4 w-4" />
+                  </SignOutButton>
+                  {/* <SignOutButton> */}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
