@@ -78,9 +78,8 @@ const upcomingEvents = [
   },
 ];
 
-export default async function Dashboard() {
+export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [userEmail, setUserEmail] = useState("");
 
   return (
     <div className="flex flex-col min-h-screen">

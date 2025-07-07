@@ -24,20 +24,12 @@ import {
 } from "@clerk/nextjs";
 
 export default function LandingPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const cheese = "cheese"; // Placeholder for cheese variable, not used in this example
   const router = useRouter();
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault(); // Simulate login - in real app, this would validate credentials
-
-    if (email && password) {
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userEmail", email);
-      router.push("/dashboard");
-    }
+    router.push("/dashboard");
   };
 
   return (
@@ -154,24 +146,11 @@ export default function LandingPage() {
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="your.email@college.edu"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                        />
+                        <Input />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="password">Password</Label>
-                        <Input
-                          id="password"
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                        />
+                        <Input id="password" type="password" />
                       </div>
                       <Button type="submit" className="w-full">
                         Sign In

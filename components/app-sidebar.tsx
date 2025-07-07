@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useUser, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import {
   Sidebar,
@@ -67,29 +67,31 @@ const navigationItems = [
 export function AppSidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  const [userEmail, setUserEmail] = useState("");
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    if (email) {
-      setUserEmail(email);
-    }
-  }, []);
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userEmail");
-    router.push("/");
+    signOut(() => router.push("/"));
   };
 
   const getUserName = () => {
-    if (userEmail) {
-      return userEmail
+    if (user?.fullName) {
+      return user.fullName;
+    }
+    if (user?.firstName && user?.lastName) {
+      return `${user.firstName} ${user.lastName}`;
+    }
+    if (user?.emailAddresses?.[0]?.emailAddress) {
+      return user.emailAddresses[0].emailAddress
         .split("@")[0]
         .replace(".", " ")
         .replace(/\b\w/g, (l) => l.toUpperCase());
     }
     return "User";
+  };
+
+  const getUserEmail = () => {
+    return user?.emailAddresses?.[0]?.emailAddress || "";
   };
 
   return (
@@ -117,20 +119,29 @@ export function AppSidebar() {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigationItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.url}
-                    tooltip={item.title}
-                  >
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navigationItems.map((item) => {
+                // Check if current path matches the menu item
+                const isActive =
+                  pathname === item.url ||
+                  (item.url !== "/dashboard" &&
+                    pathname.startsWith(item.url)) ||
+                  (item.url === "/dashboard" && pathname === "/dashboard");
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -147,7 +158,9 @@ export function AppSidebar() {
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
-                      src="/placeholder.svg?height=32&width=32"
+                      src={
+                        user?.imageUrl || "/placeholder.svg?height=32&width=32"
+                      }
                       alt={getUserName()}
                     />
                     <AvatarFallback className="rounded-lg">
@@ -161,7 +174,7 @@ export function AppSidebar() {
                     <span className="truncate font-semibold">
                       {getUserName()}
                     </span>
-                    <span className="truncate text-xs">{userEmail}</span>
+                    <span className="truncate text-xs">{getUserEmail()}</span>
                   </div>
                   <ChevronUp className="ml-auto size-4" />
                 </SidebarMenuButton>
@@ -185,10 +198,8 @@ export function AppSidebar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
-                  <SignOutButton>
-                    <LogOut className="mr-2 h-4 w-4" />
-                  </SignOutButton>
-                  {/* <SignOutButton> */}
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
