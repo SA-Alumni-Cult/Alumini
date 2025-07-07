@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   if (sub === 'admin') {
     const url = request.nextUrl.clone();
     console.log(`Admin subdomain detected: ${url.pathname}`);
-    url.pathname = `/adminDashboard`;
+    url.pathname = `/adminDashboard${url.pathname}`;
     console.log(`Rewriting request to: ${url.pathname}`);
     return NextResponse.rewrite(url);
   }

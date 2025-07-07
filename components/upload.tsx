@@ -1,8 +1,6 @@
 "use client";
 import Dragger from "antd/es/upload/Dragger";
 import { UploadProps } from "antd";
-
-import Image from "next/image";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast"
 

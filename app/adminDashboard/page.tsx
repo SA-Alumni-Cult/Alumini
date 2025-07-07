@@ -11,6 +11,7 @@ import { Search, Users, Calendar, Briefcase, MapPin, TrendingUp } from "lucide-r
 import Link from "next/link"
 import Upload from "@/components/upload"
 import { extractCSV } from "@/lib/utils"
+import { toast } from "sonner"
 
 // Mock data for alumni
 const recentAlumni = [
@@ -95,8 +96,9 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <Button variant="outline" asChild>
-                <Link href="/path/to/csv-template.csv" download>
+                <Link href="https://wqvndanjead1tl5k.public.blob.vercel-storage.com/Data%20Sheet%20Template-ANEzB6xCGkXMbA5avmEQYHD3JONNVB.csv?download" download>
                   Download Template
+                
                 </Link>
               </Button>
             </CardContent>
@@ -116,6 +118,7 @@ export default function Dashboard() {
             const file = data instanceof ArrayBuffer ? new File([data], "uploaded.csv", { type: "text/csv" }) : data
             if (file instanceof File) {
               extractCSV(file).then((csv) => console.log("Extracted CSV:", csv))
+              toast.success("CSV uploaded successfully!")
             } else {
               console.log("Data is not a File object:", typeof data)
             }
