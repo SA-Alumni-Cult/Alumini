@@ -64,26 +64,11 @@ const navigationItems = [
   },
 ];
 
-<<<<<<< HEAD
-export function AppSidebar({ whereAt }: { whereAt?: string }) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const [userEmail, setUserEmail] = useState("")
-
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail")
-    if (email) {
-      setUserEmail(email)
-    }
-  }, [])
-=======
 export function AppSidebar() {
   const router = useRouter();
   const pathname = usePathname();
   const { user } = useUser();
   const { signOut } = useClerk();
->>>>>>> origin/Frontend
 
   const handleLogout = () => {
     signOut(() => router.push("/"));
@@ -115,27 +100,15 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              { whereAt === "adminDashboard" ? (
-                <Link href="/adminDashboard">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-                    <GraduationCap className="size-4" />
-                  </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">Admin Dashboard</span>
-                    <span className="truncate text-xs">Manage Alumni Network</span>
-                  </div>
-                </Link>
-              ) : (
-                <Link href="/dashboard">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-                    <GraduationCap className="size-4" />
-                  </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">AlumniConnect</span>
-                    <span className="truncate text-xs">College Network</span>
-                  </div>
-                </Link>
-              )}
+              <Link href="/dashboard">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+                  <GraduationCap className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">AlumniConnect</span>
+                  <span className="truncate text-xs">College Network</span>
+                </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

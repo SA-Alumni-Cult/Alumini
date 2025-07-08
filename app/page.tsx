@@ -14,10 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-<<<<<<< HEAD
-import { GraduationCap, Users, Calendar, Award, Upload } from "lucide-react";
-
-=======
 import { GraduationCap, Users, Calendar, Award } from "lucide-react";
 import {
   SignedIn,
@@ -26,7 +22,6 @@ import {
   UserButton,
   SignOutButton,
 } from "@clerk/nextjs";
->>>>>>> origin/Frontend
 
 export default function LandingPage() {
   const cheese = "cheese"; // Placeholder for cheese variable, not used in this example
