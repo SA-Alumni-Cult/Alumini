@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import Link from "next/link"
+import { useRouter, usePathname } from "next/navigation";
+import { useUser, useClerk } from "@clerk/nextjs";
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -15,11 +15,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Home, Users, User, Calendar, Briefcase, Settings, LogOut, ChevronUp, GraduationCap } from "lucide-react"
-
+} from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Home,
+  Users,
+  User,
+  Calendar,
+  Briefcase,
+  Settings,
+  LogOut,
+  ChevronUp,
+  GraduationCap,
+} from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
 const navigationItems = [
   {
     title: "Dashboard",
@@ -41,18 +56,15 @@ const navigationItems = [
     url: "/dashboard/events",
     icon: Calendar,
   },
-  {
-    title: "Job Board",
-    url: "/dashboard/jobs",
-    icon: Briefcase,
-  },
+
   {
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
   },
-]
+];
 
+<<<<<<< HEAD
 export function AppSidebar({ whereAt }: { whereAt?: string }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -65,22 +77,37 @@ export function AppSidebar({ whereAt }: { whereAt?: string }) {
       setUserEmail(email)
     }
   }, [])
+=======
+export function AppSidebar() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { user } = useUser();
+  const { signOut } = useClerk();
+>>>>>>> origin/Frontend
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn")
-    localStorage.removeItem("userEmail")
-    router.push("/")
-  }
+    signOut(() => router.push("/"));
+  };
 
   const getUserName = () => {
-    if (userEmail) {
-      return userEmail
+    if (user?.fullName) {
+      return user.fullName;
+    }
+    if (user?.firstName && user?.lastName) {
+      return `${user.firstName} ${user.lastName}`;
+    }
+    if (user?.emailAddresses?.[0]?.emailAddress) {
+      return user.emailAddresses[0].emailAddress
         .split("@")[0]
         .replace(".", " ")
-        .replace(/\b\w/g, (l) => l.toUpperCase())
+        .replace(/\b\w/g, (l) => l.toUpperCase());
     }
-    return "User"
-  }
+    return "User";
+  };
+
+  const getUserEmail = () => {
+    return user?.emailAddresses?.[0]?.emailAddress || "";
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -119,16 +146,29 @@ export function AppSidebar({ whereAt }: { whereAt?: string }) {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigationItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navigationItems.map((item) => {
+                // Check if current path matches the menu item
+                const isActive =
+                  pathname === item.url ||
+                  (item.url !== "/dashboard" &&
+                    pathname.startsWith(item.url)) ||
+                  (item.url === "/dashboard" && pathname === "/dashboard");
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -144,7 +184,12 @@ export function AppSidebar({ whereAt }: { whereAt?: string }) {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src="/placeholder.svg?height=32&width=32" alt={getUserName()} />
+                    <AvatarImage
+                      src={
+                        user?.imageUrl || "/placeholder.svg?height=32&width=32"
+                      }
+                      alt={getUserName()}
+                    />
                     <AvatarFallback className="rounded-lg">
                       {getUserName()
                         .split(" ")
@@ -153,8 +198,10 @@ export function AppSidebar({ whereAt }: { whereAt?: string }) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{getUserName()}</span>
-                    <span className="truncate text-xs">{userEmail}</span>
+                    <span className="truncate font-semibold">
+                      {getUserName()}
+                    </span>
+                    <span className="truncate text-xs">{getUserEmail()}</span>
                   </div>
                   <ChevronUp className="ml-auto size-4" />
                 </SidebarMenuButton>
@@ -188,5 +235,5 @@ export function AppSidebar({ whereAt }: { whereAt?: string }) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

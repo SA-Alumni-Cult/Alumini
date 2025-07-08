@@ -1,14 +1,27 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Search, Users, Calendar, Briefcase, MapPin, TrendingUp } from "lucide-react"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Search,
+  Users,
+  Calendar,
+  Briefcase,
+  MapPin,
+  TrendingUp,
+} from "lucide-react";
+import Link from "next/link";
 
 // Mock data for alumni
 const recentAlumni = [
@@ -39,7 +52,7 @@ const recentAlumni = [
     location: "Austin, TX",
     avatar: "/placeholder.svg?height=40&width=40",
   },
-]
+];
 
 const upcomingEvents = [
   {
@@ -63,18 +76,10 @@ const upcomingEvents = [
     location: "San Francisco, CA",
     attendees: 75,
   },
-]
+];
 
 export default function Dashboard() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [userEmail, setUserEmail] = useState("")
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail")
-    if (email) {
-      setUserEmail(email)
-    }
-  }, [])
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -104,59 +109,36 @@ export default function Dashboard() {
         {/* Welcome Section */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-6">
           <h2 className="text-2xl font-bold mb-2">Welcome back!</h2>
-          <p className="text-blue-100">Stay connected with your alumni network and discover new opportunities.</p>
+          <p className="text-blue-100">
+            Stay connected with your alumni network and discover new
+            opportunities.
+          </p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Alumni</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">
+                Total Alumni
+              </CardTitle>
+              <Users className="h-4 w-4 " />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">10,247</div>
-              <p className="text-xs text-muted-foreground">+12% from last month</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Members</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">8,432</div>
-              <p className="text-xs text-muted-foreground">+8% from last month</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Upcoming Events</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-muted-foreground">Next event in 5 days</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Job Postings</CardTitle>
-              <Briefcase className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">47</div>
-              <p className="text-xs text-muted-foreground">+3 new this week</p>
+              <p className="text-xs ">+12% from last month</p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid  lg:grid-cols-1 gap-6">
           {/* Recent Alumni */}
           <Card>
             <CardHeader>
               <CardTitle>Recently Joined Alumni</CardTitle>
-              <CardDescription>New members who joined the network this month</CardDescription>
+              <CardDescription>
+                New members who joined the network this month
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {recentAlumni.map((alumni) => (
@@ -189,52 +171,18 @@ export default function Dashboard() {
                       {alumni.location}
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" asChild>
+                  <Button className="border-1 border-black " size="sm" asChild>
                     <Link href={`/dashboard/profile/${alumni.id}`}>View</Link>
                   </Button>
                 </div>
               ))}
-              <Button variant="outline" className="w-full bg-transparent">
+              <Button className="w-full border-1 border-black">
                 View All Alumni
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Upcoming Events */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Upcoming Events</CardTitle>
-              <CardDescription>Don't miss these exciting alumni events</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {upcomingEvents.map((event) => (
-                <div key={event.id} className="border rounded-lg p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">{event.title}</h4>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        {event.date}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {event.location}
-                      </div>
-                    </div>
-                    <Badge variant="secondary">{event.attendees} attending</Badge>
-                  </div>
-                  <Button size="sm" className="mt-3">
-                    Register
-                  </Button>
-                </div>
-              ))}
-              <Button variant="outline" className="w-full bg-transparent">
-                View All Events
               </Button>
             </CardContent>
           </Card>
         </div>
       </div>
     </div>
-  )
+  );
 }

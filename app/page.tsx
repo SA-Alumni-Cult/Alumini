@@ -1,7 +1,8 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import Link from "next/link";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,23 +14,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+<<<<<<< HEAD
 import { GraduationCap, Users, Calendar, Award, Upload } from "lucide-react";
 
+=======
+import { GraduationCap, Users, Calendar, Award } from "lucide-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  SignOutButton,
+} from "@clerk/nextjs";
+>>>>>>> origin/Frontend
 
 export default function LandingPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const cheese = "cheese"; // Placeholder for cheese variable, not used in this example
   const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate login - in real app, this would validate credentials
-    if (email && password) {
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userEmail", email);
-      router.push("/dashboard");
-    }
+    e.preventDefault(); // Simulate login - in real app, this would validate credentials
+    router.push("/dashboard");
   };
 
   return (
@@ -44,6 +49,19 @@ export default function LandingPage() {
                 AlumniConnect
               </span>
             </div>
+            {/* Auth buttons in header */}
+            <div className="flex items-center space-x-4">
+              <SignedIn>
+                <UserButton afterSignOutUrl="/" />
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition duration-300">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </SignedOut>
+            </div>
           </div>
         </div>
       </header>
@@ -54,8 +72,8 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl">
-                Connect with Your
-                <span className="text-blue-600"> Alumni Network</span>
+                Connect with Your{" "}
+                <span className="text-blue-600">Alumni Network</span>
               </h1>
               <p className="mt-6 text-xl text-gray-600">
                 Stay connected with your college community. Discover
@@ -84,61 +102,113 @@ export default function LandingPage() {
                   </span>
                 </div>
               </div>
+
+              {/* Call to Action for signed out users */}
+              <div className="mt-10">
+                <SignedOut>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <SignInButton mode="modal">
+                      <button className="px-8 py-4 bg-blue-600 text-white rounded-lg text-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                        Get Started - Join Now
+                      </button>
+                    </SignInButton>
+                    <a
+                      href="#stats"
+                      className="px-8 py-4 bg-white text-blue-600 border-2 border-blue-600 rounded-lg text-lg font-semibold hover:bg-blue-50 transition duration-300"
+                    >
+                      Learn More
+                    </a>
+                  </div>
+                </SignedOut>
+
+                <SignedIn>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link
+                      href="/dashboard"
+                      className="px-8 py-4 bg-blue-600 text-white rounded-lg text-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105"
+                    >
+                      Go to Dashboard
+                    </Link>
+                    <button className="px-8 py-4 bg-white text-blue-600 border-2 border-blue-600 rounded-lg text-lg font-semibold hover:bg-blue-50 transition duration-300">
+                      Explore Network
+                    </button>
+                  </div>
+                </SignedIn>
+              </div>
             </div>
 
-            {/* Login Form */}
-            <div className="lg:justify-self-end">
-              <Card className="w-full max-w-md">
-                <CardHeader>
-                  <CardTitle>Welcome Back</CardTitle>
-                  <CardDescription>
-                    Sign in to access your alumni network
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your.email@college.edu"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
+            {/* Login Form - only show for signed out users */}
+            <SignedOut>
+              <div className="lg:justify-self-end">
+                <Card className="w-full max-w-md">
+                  <CardHeader>
+                    <CardTitle>Welcome Back</CardTitle>
+                    <CardDescription>
+                      Sign in to access your alumni network
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <form onSubmit={handleLogin} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <Input id="password" type="password" />
+                      </div>
+                      <Button type="submit" className="w-full">
+                        Sign In
+                      </Button>
+                    </form>
+                    <div className="mt-4 text-center">
+                      <p className="text-sm text-gray-600">
+                        Don't have an account?{" "}
+                        <a href="#" className="text-blue-600 hover:underline">
+                          Request Access
+                        </a>
+                      </p>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
+                  </CardContent>
+                </Card>
+              </div>
+            </SignedOut>
+
+            {/* Welcome message for signed in users */}
+            <SignedIn>
+              <div className="lg:justify-self-end">
+                <Card className="w-full max-w-md">
+                  <CardHeader>
+                    <CardTitle>Welcome Back!</CardTitle>
+                    <CardDescription>
+                      Ready to explore your alumni network?
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="p-4 bg-blue-50 rounded-lg">
+                        <p className="text-sm text-blue-800">
+                          🎉 You have 3 new connection requests and 2 upcoming
+                          events!
+                        </p>
+                      </div>
+                      <Link
+                        href="/dashboard"
+                        className="w-full inline-block text-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                      >
+                        View Dashboard
+                      </Link>
                     </div>
-                    <Button type="submit" className="w-full">
-                      Sign In
-                    </Button>
-                  </form>
-                  <div className="mt-4 text-center">
-                    <p className="text-sm text-gray-600">
-                      Don't have an account?{" "}
-                      <a href="#" className="text-blue-600 hover:underline">
-                        Request Access
-                      </a>
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </SignedIn>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      <section id="stats" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">

@@ -1,37 +1,36 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
+import type React from "react";
+import { useAuth } from "@clerk/nextjs";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
+  const { isLoaded, isSignedIn } = useAuth();
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn")
-    if (!loggedIn) {
-      router.push("/")
-    } else {
-      setIsLoggedIn(true)
-    }
-    setIsLoading(false)
-  }, [router])
-
-  if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+  if (!isLoaded) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading...
+      </div>
+    );
   }
 
-  if (!isLoggedIn) {
-    return null
+  if (!isSignedIn) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
+          <p className="text-gray-600">
+            Please sign in to access the dashboard.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -41,5 +40,5 @@ export default function DashboardLayout({
         <main className="flex-1">{children}</main>
       </div>
     </SidebarProvider>
-  )
+  );
 }

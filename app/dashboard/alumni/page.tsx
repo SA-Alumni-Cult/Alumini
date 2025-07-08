@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Search, MapPin, Users } from "lucide-react"
-import Link from "next/link"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Search, MapPin, Users } from "lucide-react";
+import Link from "next/link";
+import { SendToBackIcon } from "lucide-react";
 
 // Mock alumni data
 const allAlumni = [
@@ -66,27 +67,27 @@ const allAlumni = [
     location: "New York, NY",
     avatar: "/placeholder.svg?height=40&width=40",
   },
-]
+];
 
 export default function AlumniDirectory() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [filteredAlumni, setFilteredAlumni] = useState(allAlumni)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredAlumni, setFilteredAlumni] = useState(allAlumni);
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query)
+    setSearchQuery(query);
     if (query.trim() === "") {
-      setFilteredAlumni(allAlumni)
+      setFilteredAlumni(allAlumni);
     } else {
       const filtered = allAlumni.filter(
         (alumni) =>
           alumni.name.toLowerCase().includes(query.toLowerCase()) ||
           alumni.major.toLowerCase().includes(query.toLowerCase()) ||
           alumni.company.toLowerCase().includes(query.toLowerCase()) ||
-          alumni.location.toLowerCase().includes(query.toLowerCase()),
-      )
-      setFilteredAlumni(filtered)
+          alumni.location.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredAlumni(filtered);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -135,8 +136,12 @@ export default function AlumniDirectory() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <CardTitle className="text-lg truncate">{alumni.name}</CardTitle>
-                    <p className="text-sm text-gray-600">Class of {alumni.graduationYear}</p>
+                    <CardTitle className="text-lg truncate">
+                      {alumni.name}
+                    </CardTitle>
+                    <p className="text-sm text-gray-600">
+                      Class of {alumni.graduationYear}
+                    </p>
                   </div>
                 </div>
               </CardHeader>
@@ -145,15 +150,24 @@ export default function AlumniDirectory() {
                   <Badge variant="secondary" className="text-xs">
                     {alumni.major}
                   </Badge>
-                  <p className="text-sm font-medium text-gray-900">{alumni.company}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {alumni.company}
+                  </p>
                   <div className="flex items-center text-sm text-gray-500">
                     <MapPin className="h-3 w-3 mr-1" />
                     {alumni.location}
                   </div>
                 </div>
                 <div className="mt-4">
-                  <Button variant="outline" size="sm" className="w-full bg-transparent" asChild>
-                    <Link href={`/dashboard/profile/${alumni.id}`}>View Profile</Link>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full bg-transparent"
+                    asChild
+                  >
+                    <Link href={`/dashboard/profile/${alumni.id}`}>
+                      View Profile
+                    </Link>
                   </Button>
                 </div>
               </CardContent>
@@ -164,11 +178,13 @@ export default function AlumniDirectory() {
         {filteredAlumni.length === 0 && (
           <div className="text-center py-12">
             <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No alumni found</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No alumni found
+            </h3>
             <p className="text-gray-600">Try adjusting your search criteria.</p>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
