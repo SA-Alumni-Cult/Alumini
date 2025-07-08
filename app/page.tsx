@@ -13,7 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GraduationCap, Users, Calendar, Award } from "lucide-react";
+import { GraduationCap, Users, Calendar, Award, Upload } from "lucide-react";
+
 
 export default function LandingPage() {
   const [email, setEmail] = useState("");
@@ -159,6 +160,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
     </div>
   );
 }
