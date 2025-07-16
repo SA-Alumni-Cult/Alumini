@@ -95,7 +95,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <Button variant="outline" asChild>
-                <Link href="/path/to/csv-template.csv" download>
+                <Link href="https://wqvndanjead1tl5k.public.blob.vercel-storage.com/Data%20Sheet%20Template-ANEzB6xCGkXMbA5avmEQYHD3JONNVB.csv" download>
                   Download Template
                 </Link>
               </Button>
